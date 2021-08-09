@@ -1,0 +1,789 @@
+
+
+HI-TECH Software PICC Macro Assembler V8.05PL2
+Serial number: HCPIC-00000                            Wed Apr 20 16:02:40 2016
+
+Licensed to: MITSOS FOREVER
+     1                           	processor	16F877A
+     2                           	opt	pw 79
+     3                           	psect	__Z00000RS_,global,delta=1
+     4                           	psect	text1,local,class=CODE,delta=2
+     5                           	psect	strings,global,class=STRING,delta=2
+     6                           	psect	rbss_0,global,class=BANK0,space=1,delta=
+      +                          1
+     7                           	psect	temp,global,ovrld,class=BANK0,space=1,de
+      +                          lta=1
+     8  0000                     
+     9  0000                     
+    10  0000                     
+    11  0000                     
+    12  0000                     
+    13  0000                     
+    14  0000                     
+    15  0000                     
+    16  0000                     
+    17  0000                     
+    18                           
+    19                           	psect	__Z00000RS_
+    20  0F30                     
+    21  0F30                     
+    22                           
+    23                           	psect	text1
+    24  05A6                     _dtoa
+    25                           ;	_ptr assigned to ?a_dtoa+0
+    26  0000                     _dtoa$ptr	set	?a_dtoa
+    27                           ;_ptr stored from w
+    28  05A6  0183               	clrf	3	;select bank 0
+    29  05A7  0080               	movwf	?a_dtoa
+    30                           ;main.c: 37: ptr[digits] = 0;
+    31  05A8  0823               	movf	?_dtoa+2,w
+    32  05A9  0700               	addwf	?a_dtoa,w
+    33  05AA  0084               	movwf	4
+    34  05AB  1383               	bcf	3,7
+    35  05AC  0180               	clrf	0
+    36                           ;main.c: 38: while(digits-- > 0){
+    37  05AD  2DCF               	goto	l9
+    38  05AE                     l10
+    39                           ;main.c: 39: ptr[digits] = val%10 + '0';
+    40  05AE  0823               	movf	?_dtoa+2,w
+    41  05AF  0700               	addwf	?a_dtoa,w
+    42  05B0  0084               	movwf	4
+    43  05B1  1383               	bcf	3,7
+    44  05B2  300A               	movlw	10
+    45  05B3  00B2               	movwf	btemp+2
+    46  05B4  01B3               	clrf	btemp+3
+    47  05B5  0822               	movf	?_dtoa+1,w
+    48  05B6  00B1               	movwf	btemp+1
+    49  05B7  0821               	movf	?_dtoa,w
+    50  05B8  00B0               	movwf	btemp
+    51  05B9  120A  118A  2000   	fcall	lwmod
+    52  05BC  0830               	movf	btemp,w
+    53  05BD  3E30               	addlw	48
+    54  05BE  0080               	movwf	0
+    55                           ;main.c: 40: val /= 10;
+    56  05BF  300A               	movlw	10
+    57  05C0  00B2               	movwf	btemp+2
+    58  05C1  01B3               	clrf	btemp+3
+    59  05C2  0821               	movf	?_dtoa,w
+    60  05C3  00B0               	movwf	btemp
+    61  05C4  0822               	movf	?_dtoa+1,w
+    62  05C5  00B1               	movwf	btemp+1
+    63  05C6  120A  118A  2000   	fcall	lwdiv
+      +       120A  118A         
+    64  05CB  0834               	movf	btemp+4,w
+    65  05CC  00A1               	movwf	?_dtoa
+    66  05CD  0835               	movf	btemp+5,w
+    67  05CE  00A2               	movwf	?_dtoa+1
+    68  05CF                     l9
+    69                           ;main.c: 41: }
+    70  05CF  03A3               	decf	?_dtoa+2
+    71  05D0  0F23               	incfsz	?_dtoa+2,w
+    72  05D1  2DAE               	goto	l10
+    73  05D2  0008               	return
+    74  05D3                     _read_adc
+    75                           ;	_chn assigned to ?a_read_adc+0
+    76  0000                     _read_adc$chn	set	?a_read_adc
+    77                           ;	_chm assigned to ?a_read_adc+1
+    78  0000                     _read_adc$chm	set	?a_read_adc+1
+    79                           ;	_val assigned to ?a_read_adc+2
+    80  0000                     _read_adc$val	set	?a_read_adc+2
+    81                           ;_chn stored from w
+    82  05D3  0183               	clrf	3	;select bank 0
+    83  05D4  0080               	movwf	?a_read_adc
+    84                           ;main.c: 24: unsigned int val;
+    85  05D5  00B0               	movwf	btemp
+    86  05D6  1003               	bcf	3,0
+    87  05D7  0DB0               	rlf	btemp
+    88  05D8  1003               	bcf	3,0
+    89  05D9  0DB0               	rlf	btemp
+    90  05DA  1003               	bcf	3,0
+    91  05DB  0D30               	rlf	btemp,w
+    92  05DC  3881               	iorlw	-127
+    93  05DD  009F               	movwf	31	;volatile
+    94                           ;main.c: 27: for(chm=0;chm<100;chm++);
+    95  05DE  0181               	clrf	?a_read_adc+1
+    96  05DF                     l2
+    97  05DF  0A81               	incf	?a_read_adc+1
+    98  05E0  3064               	movlw	100
+    99  05E1  0201               	subwf	?a_read_adc+1,w
+   100  05E2  1C03               	btfss	3,0
+   101  05E3  2DDF               	goto	l2
+   102                           ;main.c: 28: ADGO = 1;
+   103  05E4  151F               	bsf	31,2
+   104                           ;main.c: 29: while(ADGO==1);
+   105  05E5                     l5
+   106  05E5  191F               	btfsc	31,2
+   107  05E6  2DE5               	goto	l5
+   108                           ;main.c: 30: val = ADRESH;
+   109  05E7  081E               	movf	30,w	;volatile
+   110  05E8  0082               	movwf	?a_read_adc+2
+   111  05E9  0183               	clrf	?a_read_adc+3
+   112                           ;main.c: 31: val = val << 8;
+   113  05EA  0083               	movwf	?a_read_adc+3
+   114  05EB  0182               	clrf	?a_read_adc+2
+   115                           ;main.c: 32: val = val | ADRESL;
+   116  05EC  1683               	bsf	3,5
+   117  05ED  081E               	movf	30,w	;volatile
+   118  05EE  1283               	bcf	3,5
+   119  05EF  0482               	iorwf	?a_read_adc+2
+   120                           ;main.c: 33: return val;
+   121  05F0  0803               	movf	?a_read_adc+3,w
+   122  05F1  00B1               	movwf	btemp+1
+   123  05F2  0802               	movf	?a_read_adc+2,w
+   124  05F3  00B0               	movwf	btemp
+   125                           ;main.c: 34: }
+   126  05F4  0008               	return
+   127                           ;main.c: 48: int main(void){
+   128  05F5                     _main
+   129                           ;main.c: 50: ADCON1 = 0x80;
+   130  05F5  3080               	movlw	-128
+   131  05F6  1683               	bsf	3,5
+   132  05F7  1303               	bcf	3,6	;carry unused
+   133  05F8  009F               	movwf	31	;volatile
+   134                           ;main.c: 51: RBPU = 1;
+   135  05F9  1781               	bsf	1,7
+   136                           ;main.c: 52: TRISA0 = 1;
+   137  05FA  1405               	bsf	5,0
+   138                           ;main.c: 53: TRISA1 = 1;
+   139  05FB  1485               	bsf	5,1
+   140                           ;main.c: 54: TRISA2 = 1;
+   141  05FC  1505               	bsf	5,2
+   142                           ;main.c: 55: TRISA3 = 1;
+   143  05FD  1585               	bsf	5,3
+   144                           ;main.c: 56: TRISB = 0x01;
+   145  05FE  3001               	movlw	1
+   146  05FF  0086               	movwf	6	;volatile
+   147                           ;main.c: 57: TRISD = 0x00;
+   148  0600  0188               	clrf	8	;volatile
+   149                           ;main.c: 59: lcd_init();
+   150  0601  120A  118A  22E4   	fcall	_lcd_init
+   151                           ;main.c: 61: printlcd("     HELMET    ");
+   152  0604  3010               	movlw	low (((packed_strings shl (0+1)+60))| (0
+      +                          +16384))
+   153  0605  00A1               	movwf	?_printlcd
+   154  0606  304F               	movlw	high (((packed_strings shl (0+1)+60))| (
+      +                          0+16384))
+   155  0607  00A2               	movwf	?_printlcd+1
+   156  0608  120A  158A  2778   	fcall	_printlcd
+   157                           ;main.c: 62: lcd_command(0XC0);
+   158  060B  30C0               	movlw	-64
+   159  060C  120A  118A  21C8   	fcall	_lcd_command
+   160                           ;main.c: 63: printlcd("              ");
+   161  060F  3020               	movlw	low (((packed_strings shl (0+1)+76))| (0
+      +                          +16384))
+   162  0610  00A1               	movwf	?_printlcd
+   163  0611  304F               	movlw	high (((packed_strings shl (0+1)+76))| (
+      +                          0+16384))
+   164  0612  00A2               	movwf	?_printlcd+1
+   165  0613  120A  158A  2778   	fcall	_printlcd
+   166                           ;main.c: 64: DelayS(2);
+   167  0616  3002               	movlw	2
+   168  0617  120A  158A  2751   	fcall	_DelayS
+   169                           ;main.c: 66: lcd_command(0X80);
+   170  061A  3080               	movlw	-128
+   171  061B  120A  118A  21C8   	fcall	_lcd_command
+   172                           ;main.c: 67: printlcd("HEAT:   C HUM:  ");
+   173  061E  30FF               	movlw	low (((packed_strings shl (0+1)+43))| (0
+      +                          +16384))
+   174  061F  00A1               	movwf	?_printlcd
+   175  0620  304E               	movlw	high (((packed_strings shl (0+1)+43))| (
+      +                          0+16384))
+   176  0621  00A2               	movwf	?_printlcd+1
+   177  0622  120A  158A  2778   	fcall	_printlcd
+   178                           ;main.c: 68: lcd_command(0XC0);
+   179  0625  30C0               	movlw	-64
+   180  0626  120A  118A  21C8   	fcall	_lcd_command
+   181                           ;main.c: 69: printlcd("LIGHT:  %  G:  %");
+   182  0629  30EE               	movlw	low (((packed_strings shl (0+1)+26))| (0
+      +                          +16384))
+   183  062A  00A1               	movwf	?_printlcd
+   184  062B  304E               	movlw	high (((packed_strings shl (0+1)+26))| (
+      +                          0+16384))
+   185  062C  00A2               	movwf	?_printlcd+1
+   186  062D  120A  158A  2778   	fcall	_printlcd
+   187  0630                     l14
+   188                           ;main.c: 72: while(1){
+   189                           ;main.c: 73: lcd_command(0X80);
+   190  0630  3080               	movlw	-128
+   191  0631  120A  118A  21C8   	fcall	_lcd_command
+      +       120A  118A         
+   192                           ;main.c: 74: heat = read_adc(0)*0.48;
+   193  0636  3000               	movlw	0
+   194  0637  25D3               	fcall	_read_adc
+   195  0638  120A  118A  2000   	fcall	lwtoft
+   196  063B  30C3               	movlw	195
+   197  063C  00B3               	movwf	btemp+3
+   198  063D  30F5               	movlw	245
+   199  063E  00B4               	movwf	btemp+4
+   200  063F  303E               	movlw	62
+   201  0640  00B5               	movwf	btemp+5
+   202  0641  120A  118A  2000   	fcall	ftmul
+   203  0644  120A  118A  2000   	fcall	fttol
+      +       120A  118A         
+   204  0649  0830               	movf	btemp,w
+   205  064A  00DD               	movwf	_heat
+   206  064B  0831               	movf	btemp+1,w
+   207  064C  00DE               	movwf	_heat+1
+   208                           ;main.c: 75: dtoa(disp_buf,heat,2);
+   209  064D  085D               	movf	_heat,w
+   210  064E  00A1               	movwf	?_dtoa
+   211  064F  085E               	movf	_heat+1,w
+   212  0650  00A2               	movwf	?_dtoa+1
+   213  0651  3002               	movlw	2
+   214  0652  00A3               	movwf	?_dtoa+2
+   215  0653  3065               	movlw	_disp_buf
+   216  0654  25A6               	fcall	_dtoa
+   217                           ;main.c: 76: printlcd("HEAT:");
+   218  0655  30DB               	movlw	low (((packed_strings shl (0+1)+7))| (0+
+      +                          16384))
+   219  0656  00A1               	movwf	?_printlcd
+   220  0657  304E               	movlw	high (((packed_strings shl (0+1)+7))| (0
+      +                          +16384))
+   221  0658  00A2               	movwf	?_printlcd+1
+   222  0659  120A  158A  2778   	fcall	_printlcd
+   223                           ;main.c: 77: printlcd(disp_buf);
+   224  065C  3065               	movlw	_disp_buf
+   225  065D  00A1               	movwf	?_printlcd
+   226  065E  3080               	movlw	128
+   227  065F  00A2               	movwf	?_printlcd+1
+   228  0660  120A  158A  2778   	fcall	_printlcd
+   229                           ;main.c: 78: lcd_data(0xD8);
+   230  0663  30D8               	movlw	-40
+   231  0664  120A  158A  26F7   	fcall	_lcd_data
+   232                           ;main.c: 79: printlcd("C HUM:");
+   233  0667  30E1               	movlw	low (((packed_strings shl (0+1)+13))| (0
+      +                          +16384))
+   234  0668  00A1               	movwf	?_printlcd
+   235  0669  304E               	movlw	high (((packed_strings shl (0+1)+13))| (
+      +                          0+16384))
+   236  066A  00A2               	movwf	?_printlcd+1
+   237  066B  120A  158A  2778   	fcall	_printlcd
+      +       120A  118A         
+   238                           ;main.c: 80: humid = read_adc(1)/11;
+   239  0670  300B               	movlw	11
+   240  0671  00B2               	movwf	btemp+2
+   241  0672  01B3               	clrf	btemp+3
+   242  0673  3001               	movlw	1
+   243  0674  25D3               	fcall	_read_adc
+   244  0675  120A  118A  2000   	fcall	lwdiv
+      +       120A  118A         
+   245  067A  0834               	movf	btemp+4,w
+   246  067B  00DF               	movwf	_humid
+   247  067C  0835               	movf	btemp+5,w
+   248  067D  00E0               	movwf	_humid+1
+   249                           ;main.c: 81: dtoa(disp_buf,humid,2);
+   250  067E  085F               	movf	_humid,w
+   251  067F  00A1               	movwf	?_dtoa
+   252  0680  0860               	movf	_humid+1,w
+   253  0681  00A2               	movwf	?_dtoa+1
+   254  0682  3002               	movlw	2
+   255  0683  00A3               	movwf	?_dtoa+2
+   256  0684  3065               	movlw	_disp_buf
+   257  0685  25A6               	fcall	_dtoa
+   258                           ;main.c: 82: printlcd(disp_buf);
+   259  0686  3065               	movlw	_disp_buf
+   260  0687  00A1               	movwf	?_printlcd
+   261  0688  3080               	movlw	128
+   262  0689  00A2               	movwf	?_printlcd+1
+   263  068A  120A  158A  2778   	fcall	_printlcd
+   264                           ;main.c: 85: lcd_command(0XC0);
+   265  068D  30C0               	movlw	-64
+   266  068E  120A  118A  21C8   	fcall	_lcd_command
+      +       120A  118A         
+   267                           ;main.c: 86: light = read_adc(2)/11;
+   268  0693  300B               	movlw	11
+   269  0694  00B2               	movwf	btemp+2
+   270  0695  01B3               	clrf	btemp+3
+   271  0696  3002               	movlw	2
+   272  0697  25D3               	fcall	_read_adc
+   273  0698  120A  118A  2000   	fcall	lwdiv
+      +       120A  118A         
+   274  069D  0834               	movf	btemp+4,w
+   275  069E  00E1               	movwf	_light
+   276  069F  0835               	movf	btemp+5,w
+   277  06A0  00E2               	movwf	_light+1
+   278                           ;main.c: 87: dtoa(disp_buf,light,2);
+   279  06A1  0861               	movf	_light,w
+   280  06A2  00A1               	movwf	?_dtoa
+   281  06A3  0862               	movf	_light+1,w
+   282  06A4  00A2               	movwf	?_dtoa+1
+   283  06A5  3002               	movlw	2
+   284  06A6  00A3               	movwf	?_dtoa+2
+   285  06A7  3065               	movlw	_disp_buf
+   286  06A8  25A6               	fcall	_dtoa
+   287                           ;main.c: 88: printlcd("LIGHT:");
+   288  06A9  30D4               	movlw	low ((packed_strings shl (0+1))| (0+1638
+      +                          4))
+   289  06AA  00A1               	movwf	?_printlcd
+   290  06AB  304E               	movlw	high ((packed_strings shl (0+1))| (0+163
+      +                          84))
+   291  06AC  00A2               	movwf	?_printlcd+1
+   292  06AD  120A  158A  2778   	fcall	_printlcd
+   293                           ;main.c: 89: printlcd(disp_buf);
+   294  06B0  3065               	movlw	_disp_buf
+   295  06B1  00A1               	movwf	?_printlcd
+   296  06B2  3080               	movlw	128
+   297  06B3  00A2               	movwf	?_printlcd+1
+   298  06B4  120A  158A  2778   	fcall	_printlcd
+   299                           ;main.c: 90: printlcd("%  G:");
+   300  06B7  30E8               	movlw	low (((packed_strings shl (0+1)+20))| (0
+      +                          +16384))
+   301  06B8  00A1               	movwf	?_printlcd
+   302  06B9  304E               	movlw	high (((packed_strings shl (0+1)+20))| (
+      +                          0+16384))
+   303  06BA  00A2               	movwf	?_printlcd+1
+   304  06BB  120A  158A  2778   	fcall	_printlcd
+      +       120A  118A         
+   305                           ;main.c: 92: gas = read_adc(3);
+   306  06C0  3003               	movlw	3
+   307  06C1  25D3               	fcall	_read_adc
+   308  06C2  0830               	movf	btemp,w
+   309  06C3  00DB               	movwf	_gas
+   310  06C4  0831               	movf	btemp+1,w
+   311  06C5  00DC               	movwf	_gas+1
+   312                           ;main.c: 93: dtoa(disp_buf,gas,2);
+   313  06C6  085B               	movf	_gas,w
+   314  06C7  00A1               	movwf	?_dtoa
+   315  06C8  085C               	movf	_gas+1,w
+   316  06C9  00A2               	movwf	?_dtoa+1
+   317  06CA  3002               	movlw	2
+   318  06CB  00A3               	movwf	?_dtoa+2
+   319  06CC  3065               	movlw	_disp_buf
+   320  06CD  25A6               	fcall	_dtoa
+   321                           ;main.c: 94: printlcd(disp_buf);
+   322  06CE  3065               	movlw	_disp_buf
+   323  06CF  00A1               	movwf	?_printlcd
+   324  06D0  3080               	movlw	128
+   325  06D1  00A2               	movwf	?_printlcd+1
+   326  06D2  120A  158A  2778   	fcall	_printlcd
+   327                           ;main.c: 95: printlcd("%");
+   328  06D5  30FD               	movlw	low (((packed_strings shl (0+1)+41))| (0
+      +                          +16384))
+   329  06D6  00A1               	movwf	?_printlcd
+   330  06D7  304E               	movlw	high (((packed_strings shl (0+1)+41))| (
+      +                          0+16384))
+   331  06D8  00A2               	movwf	?_printlcd+1
+   332  06D9  120A  158A  2778   	fcall	_printlcd
+      +       120A  118A         
+   333                           ;main.c: 98: if(gas > 200 || heat > 40 || humid
+      +                           > 60){
+   334  06DE  085C               	movf	_gas+1,w
+   335  06DF  3A80               	xorlw	128
+   336  06E0  00B0               	movwf	btemp
+   337  06E1  3080               	movlw	128
+   338  06E2  0230               	subwf	btemp,w
+   339  06E3  30C9               	movlw	201
+   340                           ;set	bank bits for (((_gas)))
+   341  06E4  1903               	btfsc	3,2
+   342  06E5  025B               	subwf	_gas,w
+   343  06E6  1803               	btfsc	3,0
+   344  06E7  2EFC               	goto	u80
+   345  06E8  085E               	movf	_heat+1,w
+   346  06E9  3A80               	xorlw	128
+   347  06EA  00B0               	movwf	btemp
+   348  06EB  3080               	movlw	128
+   349  06EC  0230               	subwf	btemp,w
+   350  06ED  3029               	movlw	41
+   351                           ;set	bank bits for (((_heat)))
+   352  06EE  1903               	btfsc	3,2
+   353  06EF  025D               	subwf	_heat,w
+   354  06F0  1803               	btfsc	3,0
+   355  06F1  2EFC               	goto	u80
+   356  06F2  0860               	movf	_humid+1,w
+   357  06F3  3A80               	xorlw	128
+   358  06F4  00B0               	movwf	btemp
+   359  06F5  3080               	movlw	128
+   360  06F6  0230               	subwf	btemp,w
+   361  06F7  303D               	movlw	61
+   362                           ;set	bank bits for (((_humid)))
+   363  06F8  1903               	btfsc	3,2
+   364  06F9  025F               	subwf	_humid,w
+   365  06FA  1C03               	btfss	3,0
+   366  06FB  2EFE               	goto	l16
+   367  06FC                     u80
+   368                           ;main.c: 99: RC0 = 1;
+   369  06FC  1407               	bsf	7,0
+   370                           ;main.c: 100: }
+   371  06FD  2E30               	goto	l14
+   372  06FE                     l16
+   373                           ;main.c: 102: RC0 = 0;
+   374  06FE  1007               	bcf	7,0
+   375                           ;main.c: 103: }
+   376                           ;main.c: 104: }
+   377  06FF  2E30               	goto	l14
+   378                           
+   379                           	psect	strings
+   380  0000                     
+   381  0000                     
+   382  0000                     
+   383  0000                     
+   384  0000                     
+   385  0000                     
+   386  0000                     
+   387  0000                     
+   388  0000                     
+   389  0000                     
+   390  0000                     
+   391  0000                     
+   392  0000                     
+   393  0000                     
+   394  0000                     
+   395  0000                     
+   396  0000                     
+   397  0000                     
+   398  0000                     
+   399  0000                     
+   400  0000                     
+   401  0000                     
+   402  0000                     
+   403  0000                     
+   404  0000                     
+   405  0000                     
+   406  0000                     
+   407  0000                     
+   408  0000                     
+   409  0000                     
+   410  0000                     
+   411  0000                     
+   412  0000                     
+   413  0000                     
+   414  0000                     
+   415  0000                     
+   416  0000                     
+   417  0000                     
+   418  0000                     
+   419  0000                     
+   420  0000                     
+   421  0000                     
+   422  0000                     
+   423  0000                     
+   424  0000                     
+   425  0000                     
+   426  0000                     
+   427  0000                     
+   428  0000                     
+   429  0000                     
+   430  0000                     
+   431  0000                     
+   432  0000                     
+   433  0000                     
+   434  0000                     
+   435  0000                     
+   436  0000                     
+   437  0000                     
+   438  0000                     
+   439  0000                     
+   440  0000                     
+   441  0000                     
+   442  0000                     
+   443  0000                     
+   444  0000                     
+   445  0000                     
+   446  0000                     
+   447  0000                     
+   448  0000                     
+   449  0000                     
+   450  0000                     
+   451  0000                     
+   452  0000                     
+   453  0000                     
+   454  0000                     
+   455  0000                     
+   456  0000                     
+   457  0000                     
+   458  0000                     
+   459  0000                     
+   460  0000                     
+   461  0000                     
+   462  0000                     
+   463  0000                     
+   464  0000                     
+   465  0000                     
+   466  0000                     
+   467  0000                     
+   468  0000                     
+   469  0000                     
+   470  0000                     
+   471  0000                     
+   472  0000                     
+   473  0000                     
+   474  0000                     
+   475  0000                     
+   476  0000                     
+   477  0000                     
+   478  0000                     
+   479  0000                     
+   480  0000                     
+   481  0000                     
+   482  0000                     
+   483  0000                     
+   484  0000                     
+   485  0000                     
+   486  0000                     
+   487  0000                     
+   488  0000                     
+   489  0000                     
+   490  0000                     
+   491  0000                     
+   492  0000                     
+   493  0000                     
+   494  0000                     
+   495  0000                     
+   496  0000                     
+   497  0000                     
+   498  0000                     
+   499  0000                     
+   500  0000                     
+   501  0000                     
+   502  0000                     
+   503  0000                     
+   504  0000                     
+   505  0000                     
+   506  0000                     
+   507  0000                     
+   508  0000                     
+   509  0000                     
+   510  0000                     
+   511  0000                     
+   512  0000                     
+   513  0000                     
+   514  0000                     
+   515  0000                     
+   516  0000                     
+   517  0000                     
+   518  0000                     
+   519  0000                     
+   520  0000                     
+   521  0000                     
+   522  0000                     
+   523  0000                     
+   524  0000                     
+   525  0000                     
+   526  0000                     
+   527  0000                     
+   528  0000                     
+   529  0000                     
+   530  0000                     
+   531  0000                     
+   532  0000                     
+   533  0000                     
+   534  0000                     
+   535  0000                     
+   536  0000                     
+   537  0000                     
+   538  0000                     
+   539  0000                     
+   540  0000                     
+   541  0000                     
+   542  0000                     
+   543  0000                     
+   544  0000                     
+   545  0000                     
+   546  0000                     
+   547  0000                     
+   548  0000                     
+   549  0000                     
+   550  0000                     
+   551  0000                     
+   552  0000                     
+   553  0000                     
+   554  0000                     
+   555  0000                     
+   556  0000                     
+   557  0000                     
+   558  0000                     
+   559  0000                     
+   560  0000                     
+   561  0000                     
+   562  0000                     
+   563  0000                     
+   564  0000                     
+   565  0000                     
+   566  0000                     
+   567  0000                     
+   568  0000                     
+   569  0000                     
+   570  0000                     
+   571  0000                     
+   572  0000                     
+   573  0000                     
+   574  0000                     
+   575  0000                     
+   576  0000                     
+   577  0000                     
+   578  0000                     
+   579  0000                     
+   580  0000                     
+   581  0000                     
+   582  0000                     
+   583  0000                     
+   584  0000                     
+   585  0000                     
+   586  0000                     
+   587  0000                     
+   588  0000                     
+   589  0000                     
+   590  0000                     
+   591  0000                     
+   592  0000                     
+   593  0000                     
+   594  0000                     
+   595  0000                     
+   596  0000                     
+   597  0000                     
+   598  0000                     
+   599  0000                     
+   600  0000                     
+   601  0000                     
+   602  0000                     
+   603  0000                     
+   604  0000                     
+   605  0000                     
+   606  0000                     
+   607  0000                     
+   608  0000                     
+   609  0000                     
+   610  0000                     
+   611  0000                     
+   612  0000                     
+   613  0000                     
+   614  0000                     
+   615  0000                     
+   616  0000                     
+   617  0000                     
+   618  0000                     
+   619  0000                     
+   620  0000                     
+   621  0000                     
+   622  0000                     
+   623  0000                     
+   624  0000                     
+   625  0000                     
+   626  0000                     
+   627  0000                     
+   628  0000                     
+   629  0000                     
+   630  0000                     
+   631  0000                     
+   632  0000                     
+   633  0000                     
+   634  0000                     
+   635  0000                     
+   636  0000                     
+   637  0000                     
+   638  0000                     
+   639  0000                     
+   640  0000                     
+   641  0000                     
+   642  0000                     
+   643  0000                     
+   644  0000                     
+   645  0000                     
+   646  0000                     
+   647  0000                     
+   648  0000                     
+   649  0000                     
+   650  0000                     
+   651  0000                     
+   652  0000                     
+   653  0000                     
+   654  0000                     
+   655  0000                     
+   656                           ; Packed strings
+   657  076A                     packed_strings
+   658  0000                     
+   659  0000                     
+   660  0000                     
+   661  0000                     
+   662  0000                     
+   663  0000                     
+   664  0000                     
+   665  0000                     
+   666  0000                     
+   667  076A  2649               	dw	9801	;'L', 'I'
+   668  076B  23C8               	dw	9160	;'G', 'H'
+   669  076C  2A3A               	dw	10810	;'T', ':'
+   670  076D  0048               	dw	72	;0x00, 'H'
+   671  076E  22C1               	dw	8897	;'E', 'A'
+   672  076F  2A3A               	dw	10810	;'T', ':'
+   673  0770  0043               	dw	67	;0x00, 'C'
+   674  0771  1048               	dw	4168	;' ', 'H'
+   675  0772  2ACD               	dw	10957	;'U', 'M'
+   676  0773  1D00               	dw	7424	;':', 0x00
+   677  0774  12A0               	dw	4768	;0x25, ' '
+   678  0775  1047               	dw	4167	;' ', 'G'
+   679  0776  1D00               	dw	7424	;':', 0x00
+   680  0777  2649               	dw	9801	;'L', 'I'
+   681  0778  23C8               	dw	9160	;'G', 'H'
+   682  0779  2A3A               	dw	10810	;'T', ':'
+   683  077A  1020               	dw	4128	;' ', ' '
+   684  077B  12A0               	dw	4768	;0x25, ' '
+   685  077C  1047               	dw	4167	;' ', 'G'
+   686  077D  1D20               	dw	7456	;':', ' '
+   687  077E  1025               	dw	4133	;' ', 0x25
+   688  077F  0048               	dw	72	;0x00, 'H'
+   689  0780  22C1               	dw	8897	;'E', 'A'
+   690  0781  2A3A               	dw	10810	;'T', ':'
+   691  0782  1020               	dw	4128	;' ', ' '
+   692  0783  1043               	dw	4163	;' ', 'C'
+   693  0784  1048               	dw	4168	;' ', 'H'
+   694  0785  2ACD               	dw	10957	;'U', 'M'
+   695  0786  1D20               	dw	7456	;':', ' '
+   696  0787  1000               	dw	4096	;' ', 0x00
+   697  0788  1020               	dw	4128	;' ', ' '
+   698  0789  1020               	dw	4128	;' ', ' '
+   699  078A  1048               	dw	4168	;' ', 'H'
+   700  078B  22CC               	dw	8908	;'E', 'L'
+   701  078C  26C5               	dw	9925	;'M', 'E'
+   702  078D  2A20               	dw	10784	;'T', ' '
+   703  078E  1020               	dw	4128	;' ', ' '
+   704  078F  1000               	dw	4096	;' ', 0x00
+   705  0790  1020               	dw	4128	;' ', ' '
+   706  0791  1020               	dw	4128	;' ', ' '
+   707  0792  1020               	dw	4128	;' ', ' '
+   708  0793  1020               	dw	4128	;' ', ' '
+   709  0794  1020               	dw	4128	;' ', ' '
+   710  0795  1020               	dw	4128	;' ', ' '
+   711  0796  1020               	dw	4128	;' ', ' '
+   712  0797  0000               	dw	0	;0x00
+   713                           
+   714                           	psect	rbss_0
+   715  005B                     _gas
+   716  005B                     	ds	2
+   717  005D                     _heat
+   718  005D                     	ds	2
+   719  005F                     _humid
+   720  005F                     	ds	2
+   721  0061                     _light
+   722  0061                     	ds	2
+   723  0063                     _sound
+   724  0063                     	ds	2
+   725  0065                     _disp_buf
+   726  0065                     	ds	10
+   727                           
+   728                           	psect	temp
+   729  0F30                     btemp
+   730  0F30                     	ds	6
+
+
+HI-TECH Software PICC Macro Assembler V8.05PL2
+Symbol Table                                          Wed Apr 20 16:02:40 2016
+
+            ?a_dtoa 0000                   l2 05DF                   l5 05E5  
+                 l9 05CF                  l10 05AE                  l14 0630  
+                l16 06FE                  u19 4F10                  u29 4F20  
+                u39 4EFF                  u80 06FC                  u49 4EEE  
+                u59 4EDB                  u69 4EE1                  u79 4ED4  
+                u89 4EE8                  u99 4EFD            _lcd_data 0EF7  
+                fsr 0004            _disp_buf 0065            _lcd_init 02E4  
+            _DelayS 0F51                 _gas 005B            _read_adc 05D3  
+          _printlcd 0F78                _heat 005D                _main 05F5  
+              _dtoa 05A6                btemp 0F30                ftmul 0000  
+              fttol 0000                lwdiv 0000                lwmod 0000  
+              start 0000           ?_printlcd 0021               ?_dtoa 0021  
+        ?a_read_adc 0000               _light 0061               _humid 005F  
+       _lcd_command 01C8               _sound 0063               lwtoft 0000  
+             status 0003  uses_packed_strings 0000          clear_bank0 0000  
+        used_btemp0 0000          used_btemp1 0000          used_btemp2 0000  
+        used_btemp3 0000          used_btemp4 0000          used_btemp5 0000  
+     packed_strings 076A  

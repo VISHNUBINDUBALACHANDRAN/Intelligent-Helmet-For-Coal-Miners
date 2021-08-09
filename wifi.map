@@ -1,0 +1,313 @@
+HI-TECH Software PICC Compiler V8.05PL2
+
+Linker command line:
+
+-z -Mwifi.map -ol.obj \
+  -ppowerup=00h,intentry=04h,intcode,intret,init,init23,end_init,clrtext,stringtable,pstrings,strings \
+  -ABANK0=020h-07Fh -prbit_0=BANK0,rbss_0=BANK0,rdata_0=BANK0,idata_0=CODE \
+  -ABANK1=0A0h-0EFh -prbit_1=BANK1,rbss_1=BANK1,rdata_1=BANK1,idata_1=CODE \
+  -ABANK2=0110h-016Fh \
+  -prbit_2=BANK2,rbss_2=BANK2,rdata_2=BANK2,idata_2=CODE \
+  -ABANK3=0190h-01EFh \
+  -prbit_3=BANK3,rbss_3=BANK3,rdata_3=BANK3,idata_3=CODE \
+  -ACOMBANK=070h-07Fh -ptemp=COMBANK -ACODE=0-7FFhx4 -ACONST=0-0FFhx32 \
+  -pconfig=2007h -pidloc=2000h -AEEDATA=2100h-21FFh -peeprom_data=EEDATA \
+  -pfloat_text0=CODE,float_text1=CODE,float_text2=CODE \
+  -pfloat_text3=CODE,float_text4=CODE \
+  -pnvram=BANK0,nvram_1=BANK1,nvram_2=BANK2,nvram_3=BANK3 \
+  -pnvbit_0=BANK0,nvbit_1=BANK1,nvbit_2=BANK2,nvbit_3=BANK3 -Q16F877A \
+  -h+wifi.sym -E -EC:\DOCUME~1\jasimar\LOCALS~1\Temp\_3FC.AAA \
+  -ver=PICC#V8.05PL2 C:\HT-PIC\LIB\picrt42c.obj \
+  D:\9-04-2016\project 2016\pic\HELMET\serial.obj \
+  D:\9-04-2016\project 2016\pic\HELMET\delay.obj \
+  D:\9-04-2016\project 2016\pic\HELMET\lcd4bit.obj \
+  D:\9-04-2016\project 2016\pic\HELMET\main.obj C:\HT-PIC\LIB\pic62--u.lib \
+  C:\HT-PIC\LIB\pic42c-c.lib C:\HT-PIC\LIB\pic62--u.lib 
+
+Object code version is 3.7
+
+Machine type is 16F877A
+
+Call graph:
+
+*_main size 0,0 offset 0
+     _lcd_init size 0,0 offset 0
+         _DelayMs size 0,2 offset 4
+         _write_command size 0,1 offset 1
+             _DelayMs size 0,2 offset 4
+         _lcd_command size 0,1 offset 0
+             _write_command size 0,1 offset 1
+                 _DelayMs size 0,2 offset 4
+*    _printlcd size 2,0 offset 0
+*        _lcd_data size 0,1 offset 2
+*            _write_data size 0,1 offset 3
+*                _DelayMs size 0,2 offset 4
+         string_table
+*    _lcd_command size 0,1 offset 0
+*        _write_command size 0,1 offset 1
+*            _DelayMs size 0,2 offset 4
+     _DelayS size 0,1 offset 0
+         _DelayMs size 0,2 offset 4
+     _read_adc size 0,4 offset 0
+     _dtoa size 3,1 offset 0
+         lwmod
+         lwdiv
+*    _lcd_data size 0,1 offset 2
+*        _write_data size 0,1 offset 3
+*            _DelayMs size 0,2 offset 4
+     lwtoft
+     ftmul size 0,0 offset 0
+         ftunpack1
+         ftunpack2
+     fttol size 0,0 offset 0
+         ftunpack1
+         l0neg
+     lwdiv
+
+		Name          Link     Load   Length Selector Space Scale
+C:\HT-PIC\LIB\picrt42c.obj
+		end_init         8        8        4       8     0
+D:\9-04-2016\project 2016\pic\HELMET\serial.obj
+		temp            70       70        2      70     1
+		text2          49A      49A        8     934     0
+		text1          4E5      4E5       24     9CA     0
+		text0          4A2      4A2       13     944     0
+D:\9-04-2016\project 2016\pic\HELMET\delay.obj
+		text0          509      509       36     A12     0
+D:\9-04-2016\project 2016\pic\HELMET\lcd4bit.obj
+		text1          4B5      4B5       15     96A     0
+		text4          4CA      4CA       1B     994     0
+		text0          53F      53F       45     A7E     0
+D:\9-04-2016\project 2016\pic\HELMET\main.obj
+		strings         45       45       2E       8     0
+		rbss_0          20       20       14      20     1
+		temp            70       70        6      70     1
+		text1          584      584      15A     B08     0
+
+C:\HT-PIC\LIB\pic62--u.lib
+readprog.obj    pstrings        29       29       1C       8     0
+		code_ptr        3A       3A        2      20     1
+
+C:\HT-PIC\LIB\pic42c-c.lib
+btemp0.obj      temp            70       70        1      70     1
+btemp10.obj     temp            70       70        B      70     1
+btemp11.obj     temp            70       70        C      70     1
+btemp1.obj      temp            70       70        2      70     1
+btemp2.obj      temp            70       70        3      70     1
+btemp3.obj      temp            70       70        4      70     1
+btemp4.obj      temp            70       70        5      70     1
+btemp5.obj      temp            70       70        6      70     1
+btemp6.obj      temp            70       70        7      70     1
+btemp7.obj      temp            70       70        8      70     1
+btemp8.obj      temp            70       70        9      70     1
+btemp9.obj      temp            70       70        A      70     1
+clrbank0.obj    init             4        4        4       8     0
+clr.obj         clrtext          C        C        7       8     0
+codeptr.obj     
+float.obj       float_tex      6EA      6EA       4E     DD4     0
+		temp            70       70        9      70     1
+ftmul.obj       float_tex      738      738       41     DD4     0
+		temp            70       70        C      70     1
+fttol.obj       float_tex      779      779       23     DD4     0
+		temp            70       70        9      70     1
+l0neg.obj       float_tex      7F2      7F2        E     FE4     0
+		temp            70       70        4      70     1
+ltoft.obj       float_tex      79C      79C       13     DD4     0
+		temp            70       70        9      70     1
+powerup.obj     powerup          0        0        4       0     0
+store3.obj      temp            70       70        9      70     1
+		ftext0         6DE      6DE        C     DBC     0
+stringtab.obj   stringtab       13       13       16       8     0
+		code_ptr        3A       3A        2      20     1
+wdiv.obj        float_tex      7B8      7B8       3A     F70     0
+		temp            70       70        7      70     1
+wtoft.obj       float_tex      7AF      7AF        9     DD4     0
+		temp            70       70        9      70     1
+
+C:\HT-PIC\LIB\pic62--u.lib
+
+COMMON          rbss_0          34       34        6      20     1
+
+TOTAL		Name          Link     Load   Length
+	CLASS	BANK0    
+		rbss_0          20       20       1A
+		temp            70       70        C
+		code_ptr        3A       3A        2
+
+	CLASS	BANK1    
+
+	CLASS	BANK2    
+
+	CLASS	BANK3    
+
+	CLASS	COMBANK  
+
+	CLASS	CODE     
+		pstrings        29       29       1C
+		powerup          0        0        4
+		float_tex      7B8      7B8       3A
+		float_tex      7F2      7F2        E
+		clrtext          C        C        7
+		float_tex      6EA      6EA       CE
+		end_init         8        8        4
+		init             4        4        4
+		text2          49A      49A        8
+		text1          4E5      4E5       24
+		text0          4A2      4A2       13
+		text0          509      509       36
+		text1          4B5      4B5       15
+		text4          4CA      4CA       1B
+		text0          53F      53F       45
+		text1          584      584      15A
+		ftext0         6DE      6DE        C
+
+	CLASS	CONST    
+
+	CLASS	EEDATA   
+
+	CLASS	ENTRY    
+		stringtab       13       13       16
+
+	CLASS	STRING   
+		strings         45       45       2E
+
+	CLASS	IDLOC    
+
+	CLASS	CONFIG   
+
+
+
+SEGMENTS	Name		Load	Length	 Top	Selector    Space Class
+
+		powerup         000000	000004	000004	       0       0  CODE    
+		intentry        000004	00006F	000073	       8       0  CODE    
+		rbit_0          000020	00001C	00003C	      20       1  BANK0   
+		temp            000070	00000C	00007C	      70       1  COMBANK 
+		text2           00049A	000008	0004A2	     934       0  CODE    
+		text0           0004A2	000013	0004B5	     944       0  CODE    
+		text1           0004B5	000015	0004CA	     96A       0  CODE    
+		text4           0004CA	00001B	0004E5	     994       0  CODE    
+		text1           0004E5	000024	000509	     9CA       0  CODE    
+		text0           000509	000036	00053F	     A12       0  CODE    
+		text0           00053F	000045	000584	     A7E       0  CODE    
+		text1           000584	00015A	0006DE	     B08       0  CODE    
+		ftext0          0006DE	00000C	0006EA	     DBC       0  CODE    
+		float_text4     0006EA	0000CE	0007B8	     DD4       0  CODE    
+		float_text1     0007B8	00003A	0007F2	     F70       0  CODE    
+		float_text0     0007F2	00000E	000800	     FE4       0  CODE    
+
+
+UNUSED ADDRESS RANGES
+
+	BANK0            003C-006F
+	                 007C-007F
+	BANK1            00A0-00EF
+	BANK2            0110-016F
+	BANK3            0190-01EF
+	CODE             0073-0499
+	                 0800-1FFF
+	COMBANK          007C-007F
+	CONST            0073-0499
+	                 0800-1FFF
+	EEDATA           2100-21FF
+
+                                  Symbol Table
+
+?_dtoa              rbss_0      0034  ?_printlcd          rbss_0      0034
+?_prints            rbss_0      0034  ?a_DelayMs          rbss_0      0038
+?a_DelayS           rbss_0      0034  ?a_dtoa             rbss_0      0037
+?a_lcd_command      rbss_0      0034  ?a_lcd_data         rbss_0      0036
+?a_read_adc         rbss_0      0034  ?a_sendchar         rbss_0      0034
+?a_write_command    rbss_0      0035  ?a_write_data       rbss_0      0037
+_DelayMs            text0       0509  _DelayS             text0       052E
+__Bnvbit_0          nvbit_0     003A  __Bnvbit_1          nvbit_1     00A0
+__Bnvbit_2          nvbit_2     0110  __Bnvbit_3          nvbit_3     0190
+__Brbit_0           rbit_0      0020  __Brbit_1           rbit_1      00A0
+__Brbit_2           rbit_2      0110  __Brbit_3           rbit_3      0190
+__H__Z00000RS_      __Z00000RS_ 0190  __Hclrtext          clrtext     0013
+__Hcode             code        0190  __Hcode_ptr         code_ptr    003C
+__Hcommon_ram       common_ram  0190  __Hconfig           config      2007
+__Heeprom_data      eeprom_data 2100  __Hend_init         end_init    000C
+__Hfloat_text0      float_text0 0800  __Hfloat_text1      float_text1 07F2
+__Hfloat_text2      float_text2 0073  __Hfloat_text3      float_text3 0073
+__Hfloat_text4      float_text4 07B8  __Hidata_0          idata_0     0073
+__Hidata_1          idata_1     0073  __Hidata_2          idata_2     0073
+__Hidata_3          idata_3     0073  __Hidloc            idloc       2000
+__Hinit             init        0008  __Hinit23           init23      0008
+__Hintcode          intcode     0004  __Hintentry         intentry    0004
+__Hintret           intret      0004  __Hintsave          intsave     0190
+__Hintsave_0        intsave_0   0190  __Hintsave_1        intsave_1   0190
+__Hintsave_2        intsave_2   0190  __Hintsave_3        intsave_3   0190
+__Hnvbit_0          nvbit_0     01D0  __Hnvbit_1          nvbit_1     0500
+__Hnvbit_2          nvbit_2     0880  __Hnvbit_3          nvbit_3     0C80
+__Hnvram            nvram       003A  __Hnvram_1          nvram_1     00A0
+__Hnvram_2          nvram_2     0110  __Hnvram_3          nvram_3     0190
+__Hpowerup          powerup     0004  __Hpstrings         pstrings    0045
+__Hrbit_0           rbit_0      0100  __Hrbit_1           rbit_1      0500
+__Hrbit_2           rbit_2      0880  __Hrbit_3           rbit_3      0C80
+__Hrbss_0           rbss_0      003A  __Hrbss_1           rbss_1      00A0
+__Hrbss_2           rbss_2      0110  __Hrbss_3           rbss_3      0190
+__Hrdata_0          rdata_0     003A  __Hrdata_1          rdata_1     00A0
+__Hrdata_2          rdata_2     0110  __Hrdata_3          rdata_3     0190
+__Hstrings          strings     0073  __Hstringtable      stringtable 0029
+__Hstruct           struct      003C  __Htemp             temp        007C
+__Htext             text        0190  __Hvectors          vectors     0073
+__L__Z00000RS_      __Z00000RS_ 0190  __Lclrtext          clrtext     000C
+__Lcode             code        0190  __Lcode_ptr         code_ptr    003A
+__Lcommon_ram       common_ram  0190  __Lconfig           config      2007
+__Leeprom_data      eeprom_data 2100  __Lend_init         end_init    0008
+__Lfloat_text0      float_text0 07F2  __Lfloat_text1      float_text1 07B8
+__Lfloat_text2      float_text2 0073  __Lfloat_text3      float_text3 0073
+__Lfloat_text4      float_text4 06EA  __Lidata_0          idata_0     0073
+__Lidata_1          idata_1     0073  __Lidata_2          idata_2     0073
+__Lidata_3          idata_3     0073  __Lidloc            idloc       2000
+__Linit             init        0004  __Linit23           init23      0008
+__Lintcode          intcode     0004  __Lintentry         intentry    0004
+__Lintret           intret      0004  __Lintsave          intsave     0190
+__Lintsave_0        intsave_0   0190  __Lintsave_1        intsave_1   0190
+__Lintsave_2        intsave_2   0190  __Lintsave_3        intsave_3   0190
+__Lnvbit_0          nvbit_0     01D0  __Lnvbit_1          nvbit_1     0500
+__Lnvbit_2          nvbit_2     0880  __Lnvbit_3          nvbit_3     0C80
+__Lnvram            nvram       003A  __Lnvram_1          nvram_1     00A0
+__Lnvram_2          nvram_2     0110  __Lnvram_3          nvram_3     0190
+__Lpowerup          powerup     0000  __Lpstrings         pstrings    0029
+__Lrbit_0           rbit_0      0100  __Lrbit_1           rbit_1      0500
+__Lrbit_2           rbit_2      0880  __Lrbit_3           rbit_3      0C80
+__Lrbss_0           rbss_0      0020  __Lrbss_1           rbss_1      00A0
+__Lrbss_2           rbss_2      0110  __Lrbss_3           rbss_3      0190
+__Lrdata_0          rdata_0     003A  __Lrdata_1          rdata_1     00A0
+__Lrdata_2          rdata_2     0110  __Lrdata_3          rdata_3     0190
+__Lstrings          strings     0045  __Lstringtable      stringtable 0013
+__Lstruct           struct      003C  __Ltemp             temp        0070
+__Ltext             text        0190  __Lvectors          vectors     0073
+__S0                (abs)       2100  __S1                (abs)       0190
+_disp_buf           rbss_0      002A  _dtoa               text1       0584
+_exit               init        0004  _gas                rbss_0      0020
+_getchar            text2       049A  _heat               rbss_0      0022
+_humid              rbss_0      0024  _init_serial        text0       04A2
+_lcd_command        text0       054C  _lcd_data           text1       04C2
+_lcd_init           text0       0554  _light              rbss_0      0026
+_main               text1       05D3  _printlcd           text4       04CA
+_prints             text1       04EE  _read_adc           text1       05B1
+_sendchar           text1       04E5  _sound              rbss_0      0028
+_write_command      text0       053F  _write_data         text1       04B5
+altoft              float_text4 079C  awtoft              float_text4 07AF
+clear_bank0         init        0004  clear_ram           clrtext     000F
+code_ptr            code_ptr    003A  dowdiv              float_text1 07B9
+ftmul               float_text4 0738  ftmul_x             float_text4 0739
+ftnorm1             float_text4 0714  fttol               float_text4 0779
+ftunpack1           float_text4 06EA  ftunpack2           float_text4 06F9
+intlevel0           intentry    0004  intlevel1           intentry    0004
+l0neg               float_text0 07F2  lltoft              float_text4 07A1
+lwdiv               float_text1 07B8  lwmod               float_text1 07B8
+lwtoft              float_text4 07B5  powerup             powerup     0000
+start               init        0004  storeback_3         ftext0      06DE
+string_indir        stringtable 0016  string_table        stringtable 0013
+used_btemp0         (abs)       0001  used_btemp1         (abs)       0001
+used_btemp10        (abs)       0001  used_btemp11        (abs)       0001
+used_btemp2         (abs)       0001  used_btemp3         (abs)       0001
+used_btemp4         (abs)       0001  used_btemp5         (abs)       0001
+used_btemp6         (abs)       0001  used_btemp7         (abs)       0001
+used_btemp8         (abs)       0001  used_btemp9         (abs)       0001
+used_code_ptr       (abs)       0001  uses_packed_strings pstrings    0029
+zerctt              float_text4 06F5  
